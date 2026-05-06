@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body class="min-h-screen bg-black text-white"
+      th:style="'background-image: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.50)), url(' + @{/images/indexImage.png} + '); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: fixed;'">
+
+<div class="flex min-h-screen">
+    <aside th:replace="layout/layout :: sidebar"></aside>
+    <main class="flex-1 px-8 py-6">
+
+        <div th:if="${mensajeExito}" id = "alertSuccess"  class = "fixed top-4 left-1/2 transform -translate-x 1/2 z-50 bg-green-600 text-white px-6 rounded-xl shadow-xl font-semibold transition-all duration-500">
+            <span th:text="${mensajeExito}"></span>
+        </div>
+        <section class="w-full max-w-7xl mx-auto rounded-[28px] bg-[rgba(30,30,30,0.50)]
+                        backdrop-blur-md border border-white/20 shadow-2xl p-6">
+            <div class="flex flex-col lg:flex-row lg:items-center
+                        lg:justify-between gap-4 mb-6">
+                <div>
+                    <h1 class="text-3xl font-light tracking-[0.25em]">PRODUCTS</h1>
+                    <p class="text-white/70 mt-2">
+                        Manage vehicles and energy products
+                    </p>
+                </div>
+                <a th:href="@{/products/new}" class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-[#b91c1c] to-[#ef4444] px-5 py-3 font-semibold shadow-lg shadow-red-950/40 transition hover:from-[#991b1b] hover:to-[#dc2626]">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>New Product</span>
+                </a>
+
+            </div>
+
+            <form th:action="@{/products}" method="get" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-6 gap-4 mb-8 items-end">
+                <div>
+                    <label class="block text-sm text-white/80 mb-2 tracking-[0.15em]">NAME</label>
+                    <input type="text" name="nombreProd" th:value="${nombreProd}" placeholder="Search by name" class="h-12 w-full rounded-xl border border-white/20 bg-black/30 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-white/80 mb-2 tracking-[0.15em]">CATEGORY</label>
+                    <input type="text" name="categoria" th:value="${categoria}" placeholder="Search by category" class="h-12 w-full rounded-xl border border-white/20 bg-black/30 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-white/80 mb-2 tracking-[0.15em]">BRAND</label>
+                    <input type="text" name="marca" th:value="${marca}" placeholder="Search by brand" class="h-12 w-full rounded-xl border border-white/20 bg-black/30 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div>
+                    <label class="block text-sm text-white/80 mb-2 tracking-[0.15em]">CODE</label>
+                    <input type="number" name="idProd" th:value="${idProd}" placeholder="Search by code" class="h-12 w-full rounded-xl border border-white/20 bg-black/30 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-red-500">
+                </div>
+
+                <div>
+                    <button type="submit" class="flex h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/15 px-4 font-semibold shadow-md transition hover:bg-white/25">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search</span>
+                    </button>
+                </div>
+
+                <div>
+                    <a th:href="@{/products}" class="flex h-12 w-full items-center justify-center rounded-xl border border-white/20 bg-white/10 px-4 font-semibold transition hover:bg-white/30">
+                        Clear
+                    </a>
+                </div>
+            </form>
+
+            <div th:if="${not #lists.isEmpty(products)}" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div th:each="product : ${products}" class="rounded-[24px] overflow-hidden border border-white/15 bg-[rgba(255,255,255,0.08)] shadow-xl backdrop-blur-sm">
+                    <div class="bg-white/25 px-4 py-3 text-center">
+                        <h2 class="text-md tracking-[0.18em] font-semibold" th:text="${product.nombreProd}">Model S</h2>
+                    </div>
+
+                    <div class="bg-white/90 h-[220px] flex items-center justify-center overflow-hidden">
+                        <img th:if="${product.fotoUrl != null and !#strings.isEmpty(product.fotoUrl) and !#strings.equalsIgnoreCase(product.fotoUrl, 'null')}"
+                             th:src="${product.fotoUrl}"
+                             th:alt="${product.nombreProd}"
+                             onerror="this.onerror=null;this.src='/images/notAvailable.jpg';"
+                             class="w-full h-full object-contain p-4">
+                        <img th:unless="${product.fotoUrl != null and !#strings.isEmpty(product.fotoUrl) and !#strings.equalsIgnoreCase(product.fotoUrl, 'null')}"
+                             th:src="@{/static/images/renault4.jpg}"
+                             alt="Product Image"
+                             class="w-full h-full object-contain p-4">
+                    </div>
+
+                    <div class="p-5 space-y-4">
+                        <div class="flex items-center justify-between text-sm text-white/70 tracking-[0.12em]">
+                            <span>CODE</span>
+                            <span th:text="${product.idProd}">1</span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div class="rounded-2xl bg-black/20 p-4">
+                                <p class="text-white/60 tracking-[0.12em] mb-1">CATEGORY</p>
+                                <p class="font-semibold" th:text="${product.categoria}">Vehicle</p>
+                            </div>
+                            <div class="rounded-2xl bg-black/20 p-4">
+                                <p class="text-white/60 tracking-[0.12em] mb-1">BRAND</p>
+                                <p class="font-semibold" th:text="${product.marca}">Tesla</p>
+                            </div>
+                            <div class="rounded-2xl bg-black/20 p-4">
+                                <p class="text-white/60 tracking-[0.12em] mb-1">PRICE</p>
+                                <p class="font-semibold" th:text="${'$ ' + product.precio}">$ 0.00</p>
+                            </div>
+                            <div class="rounded-2xl bg-black/20 p-4">
+                                <p class="text-white/60 tracking-[0.12em] mb-1">STOCK</p>
+                                <p class="font-semibold" th:text="${product.stock}">0</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between rounded-2xl bg-black/20 px-4 py-3">
+                            <span class="text-white/60 tracking-[0.12em] text-sm">STATUS</span>
+                            <span class="px-3 py-1 rounded-full text-sm font-semibold bg-lime-500/20 text-lime-200"
+                                  th:text="${product.estadoProd}">ACTIVE</span>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3 pt-2">
+                            <a href="#" class="rounded-2xl bg-white/10 hover:bg-white/20 border border-white/15 transition px-4 py-3 text-sm font-semibold tracking-[0.1em] text-center">
+                                Edit
+                            </a>
+                            <a href="#" class="rounded-2xl bg-gradient-to-r from-[#b91c1c] to-[#ef4444] border border-red-400/20 transition px-4 py-3 text-sm font-semibold tracking-[0.1em] text-center shadow-md shadow-red-950/30 hover:from-[#991b1b] hover:to-[#dc2626]">
+                                Details
+                            </a>
+                            <a href="#" class="rounded-2xl bg-black/30 hover:bg-black/45 border border-white/10 transition px-4 py-3 text-sm font-semibold tracking-[0.1em] text-center text-red-200">
+                                Delete
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    <div th:if="${#lists.isEmpty(products)}" class="text-center py-16 text-white/70">
+        <i class="fa-solid fa-box-open text-5xl mb-4">
+        </i>
+        <p class="text-xl tracking-[0.15em]">
+            No Products Found
+        </p>
+    </div>
+</section>
+</main>
+</div>
+</body>
+</html>

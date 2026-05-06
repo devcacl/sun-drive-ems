@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head}"></head>
+
+<body>
+<div class="min-h-screen bg-[#07090d] text-white"
+     th:style="'background-image:
+     linear-gradient(90deg, rgba(7,9,13,0.94) 0%, rgba(7,9,13,0.72) 42%, rgba(7,9,13,0.38) 100%), url(' + @{/images/indexImage.png} + ');
+               background-size: cover;
+               background-position: center;
+               background-repeat: no-repeat;
+               background-attachment: fixed;'">
+
+    <div class="flex min-h-screen">
+        <aside th:replace="~{layout/layout :: sidebar}"></aside>
+
+        <main class="flex-1 px-6 py-8 lg:px-10">
+            <section class="min-h-[calc(100vh-4rem)] flex flex-col justify-center">
+                <div class="w-full max-w-6xl border border-white/15 bg-white/[0.055] backdrop-blur-xl shadow-2xl rounded-[28px] p-7 md:p-10 lg:p-12">
+                    <div class="grid grid-cols-1 xl:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
+                        <div>
+                            <p class="font-data text-xs md:text-sm text-red-200/85 tracking-[0.32em] uppercase">
+                                Enterprise performance suite
+                            </p>
+
+                            <h1 class="mt-5 font-brand text-4xl md:text-6xl leading-tight tracking-[0.08em]">
+                                Sun & Drive
+                            </h1>
+
+                            <p class="mt-5 max-w-2xl text-lg text-white/78 leading-relaxed">
+                                Premium inventory control for electric performance vehicles, luxury cars, solar energy systems, and executive sales operations.
+                            </p>
+
+                            <div class="mt-8 flex flex-wrap gap-4">
+                                <a th:href="@{/login}"
+                                   class="inline-flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-[#b91c1c] to-[#ef4444] px-6 py-3 font-semibold text-white shadow-lg shadow-red-950/40 transition hover:from-[#991b1b] hover:to-[#dc2626]">
+                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                    <span>Login</span>
+                                </a>
+
+                                <a th:href="@{/products}"
+                                   class="inline-flex items-center justify-center gap-3 rounded-xl border border-white/25 bg-white/[0.06] px-6 py-3 font-semibold text-white transition hover:bg-white/[0.12]">
+                                    <span>View products</span>
+                                </a>
+                            </div>
+
+                            <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <article class="rounded-2xl border border-white/12 bg-black/30 p-5">
+                                    <div class="flex items-center justify-between text-white/70">
+                                        <span class="font-data text-xs tracking-[0.18em] uppercase">Monthly sales</span>
+                                        <i class="fa-solid fa-arrow-trend-up text-red-300"></i>
+                                    </div>
+                                    <p class="mt-4 font-data text-2xl font-semibold">$248M</p>
+                                    <p class="mt-1 text-sm text-white/55">High-value pipeline</p>
+                                </article>
+
+                                <article class="rounded-2xl border border-white/12 bg-black/30 p-5">
+                                    <div class="flex items-center justify-between text-white/70">
+                                        <span class="font-data text-xs tracking-[0.18em] uppercase">Solar stock</span>
+                                        <i class="fa-solid fa-solar-panel text-red-300"></i>
+                                    </div>
+                                    <p class="mt-4 font-data text-2xl font-semibold">1,284</p>
+                                    <p class="mt-1 text-sm text-white/55">Panels available</p>
+                                </article>
+
+                                <article class="rounded-2xl border border-white/12 bg-black/30 p-5">
+                                    <div class="flex items-center justify-between text-white/70">
+                                        <span class="font-data text-xs tracking-[0.18em] uppercase">In transit</span>
+                                        <i class="fa-solid fa-route text-red-300"></i>
+                                    </div>
+                                    <p class="mt-4 font-data text-2xl font-semibold">32</p>
+                                    <p class="mt-1 text-sm text-white/55">Vehicles arriving</p>
+                                </article>
+                            </div>
+                        </div>
+
+                        <div class="hidden xl:block">
+                            <div class="relative overflow-hidden rounded-[26px] border border-white/15 bg-black/35 shadow-2xl">
+                                <img class="h-[470px] w-full object-cover"
+                                     th:src="@{/images/indexImage.png}"
+                                     alt="High performance vehicle">
+                                <div class="absolute inset-x-0 bottom-0 border-t border-white/10 bg-black/55 p-5 backdrop-blur-md">
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div>
+                                            <p class="font-data text-xs tracking-[0.22em] text-white/55 uppercase">Fleet status</p>
+                                            <p class="mt-1 text-lg font-semibold">Performance inventory online</p>
+                                        </div>
+                                        <span class="rounded-full border border-green-300/30 bg-green-400/15 px-3 py-1 font-data text-xs text-green-200">LIVE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-3">
+                    <div class="flex items-center gap-3 border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-md rounded-2xl">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-300/20 bg-red-500/12 text-red-200">
+                            <i class="fa-solid fa-bolt"></i>
+                        </span>
+                        <span class="text-sm text-white/70">Electric mobility inventory</span>
+                    </div>
+                    <div class="flex items-center gap-3 border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-md rounded-2xl">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-300/20 bg-red-500/12 text-red-200">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </span>
+                        <span class="text-sm text-white/70">Executive sales visibility</span>
+                    </div>
+                    <div class="flex items-center gap-3 border border-white/10 bg-black/30 px-5 py-4 backdrop-blur-md rounded-2xl">
+                        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-red-300/20 bg-red-500/12 text-red-200">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </span>
+                        <span class="text-sm text-white/70">Admin operations control</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+</body>
+</html>

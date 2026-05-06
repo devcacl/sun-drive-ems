@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sun & Drive | Enterprise Management System</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Michroma&family=Roboto+Mono:wght@400;500;600&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body{
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-brand{
+            font-family: 'Michroma', sans-serif;
+        }
+
+        .font-display{
+            font-family: 'Syncopate', sans-serif;
+        }
+
+        .font-data{
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .glass-panel{
+            background: linear-gradient(180deg, rgba(13,16,23,0.96), rgba(8,10,15,0.94));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        .menu-shell{
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.025);
+        }
+
+        .active-item{
+            background: linear-gradient(90deg,#b91c1c 0%, #ef4444 100%);
+            color: white;
+            box-shadow: 0 8px 22px rgba(185,28,28,0.28);
+        }
+
+        .app-sidebar{
+            width: 250px;
+            flex: 0 0 250px;
+            overflow: hidden;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            transition: width 0.28s ease, flex-basis 0.28s ease, transform 0.28s ease, border-color 0.2s ease;
+        }
+
+        .sidebar-text,
+        .sidebar-brand,
+        .sidebar-profile,
+        .sidebar-section-title,
+        .logout-label{
+            transition: opacity 0.18s ease, visibility 0.18s ease, transform 0.18s ease;
+        }
+
+        .menu-item{
+            position: relative;
+            min-height: 46px;
+            color: rgba(255,255,255,0.76);
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover{
+            background: rgba(255,255,255,0.075);
+            border-color: rgba(255,255,255,0.08);
+            color: white;
+        }
+
+        .menu-item i{
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .sidebar-toggle{
+            border: 1px solid rgba(255,255,255,0.10);
+            background: rgba(255,255,255,0.055);
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .sidebar-toggle:hover{
+            background: rgba(255,255,255,0.14);
+        }
+
+        body.sidebar-collapsed .app-sidebar{
+            width: 0;
+            flex-basis: 0;
+            min-width: 0;
+            border-right-color: transparent;
+            transform: translateX(-100%);
+            pointer-events: none;
+        }
+
+        .sidebar-reopen{
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateX(-12px);
+            transition: opacity 0.2s ease, transform 0.24s ease, visibility 0.2s ease, background 0.2s ease;
+        }
+
+        body.sidebar-collapsed .sidebar-reopen{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+
+        .logout-link{
+            color: rgb(252 165 165);
+        }
+
+        .logout-link:hover{
+            background: rgba(239,68,68,0.12);
+            border-color: rgba(248,113,113,0.26);
+            color: white;
+        }
+
+        @media (max-width: 768px){
+            .app-sidebar{
+                position: fixed;
+                z-index: 50;
+                min-height: 100vh;
+            }
+
+            body.sidebar-collapsed .app-sidebar{
+                transform: translateX(-100%);
+                width: 250px;
+                flex-basis: 250px;
+            }
+        }
+    </style>
+
+    <script>
+        (function(){
+            if(localStorage.getItem('sunDriveSidebar') === 'collapsed'){
+                document.addEventListener('DOMContentLoaded', function(){
+                    document.body.classList.add('sidebar-collapsed');
+                });
+            }
+
+            window.toggleSidebar = function(){
+                const collapsed = document.body.classList.toggle('sidebar-collapsed');
+                localStorage.setItem('sunDriveSidebar', collapsed ? 'collapsed' : 'expanded');
+            };
+        })();
+    </script>
+</head>
+
+<body>
+
+<th:block th:fragment="sidebar">
+<aside class="app-sidebar min-h-screen text-white glass-panel flex flex-col justify-between shadow-2xl">
+
+    <div class="p-4">
+        <div class="mb-4 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2 text-xs font-semibold tracking-[0.18em] text-white/75">
+                <span class="h-2.5 w-2.5 rounded-full bg-green-400 shadow-[0_0_14px_rgba(74,222,128,0.8)] inline-block"></span>
+                <span class="sidebar-text">ACTIVE</span>
+            </div>
+            <button type="button"
+                    class="sidebar-toggle flex h-10 w-10 items-center justify-center rounded-xl text-white"
+                    aria-label="Toggle sidebar"
+                    onclick="toggleSidebar()">
+                <i class="fa-solid fa-chevron-left sidebar-toggle-icon transition"></i>
+            </button>
+        </div>
+
+        <div class="sidebar-admin-card bg-white/[0.035] rounded-2xl p-5 text-center border border-white/10 shadow-lg shadow-black/20 transition-all">
+            <p class="sidebar-section-title text-xs tracking-[0.25em] text-white/55">ADMIN</p>
+            <div class="w-14 h-14 mx-auto mt-3 rounded-xl bg-white/10 border border-white/12 flex items-center justify-center text-xl text-white">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <p class="sidebar-profile mt-3 text-sm font-semibold text-white/86">Camilo Leon</p>
+            <h2 class="sidebar-brand mt-2 text-xs tracking-[0.28em] font-brand text-white/80">SUN & DRIVE</h2>
+        </div>
+
+        <div class="mt-5 mb-3 text-center">
+            <div class="sidebar-section-title menu-shell py-2 text-white/70 tracking-[0.25em] text-xs">
+                MENU
+            </div>
+        </div>
+
+        <nav class="menu-shell p-2 space-y-1 text-sm font-semibold tracking-[0.12em]">
+            <a th:href="@{/}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition"
+               th:classappend="${activeMenu=='home'} ? ' active-item'">
+                <i class="fa-solid fa-house"></i>
+                <span class="sidebar-text">HOME</span>
+            </a>
+
+            <a th:href="@{/login}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                <span class="sidebar-text">LOGIN</span>
+            </a>
+
+            <a th:href="@{/products}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition"
+               th:classappend="${activeMenu=='products'} ? ' active-item'">
+                <i class="fa-solid fa-car"></i>
+                <span class="sidebar-text">PRODUCTS</span>
+            </a>
+
+            <a th:href="@{/sales}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span class="sidebar-text">SALES</span>
+            </a>
+
+            <a th:href="@{/users}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition">
+                <i class="fa-solid fa-users"></i>
+                <span class="sidebar-text">USERS</span>
+            </a>
+
+            <a th:href="@{/dashboard}"
+               class="menu-item flex items-center gap-3 px-4 py-3 rounded-xl transition">
+                <i class="fa-solid fa-chart-line"></i>
+                <span class="sidebar-text">DASHBOARD</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="p-4">
+        <a th:href="@{/logout}"
+           class="logout-link flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.035] px-4 py-3 transition">
+            <i class="fa-solid fa-power-off text-xl"></i>
+            <span class="logout-label text-sm font-semibold tracking-[0.14em] text-white">LOG OUT</span>
+        </a>
+    </div>
+</aside>
+
+<button type="button"
+        class="sidebar-reopen fixed left-4 top-4 z-[60] flex h-11 w-11 items-center justify-center rounded-xl border border-white/12 bg-[#111827]/90 text-white shadow-xl shadow-black/30 backdrop-blur-md hover:bg-[#1f2937]"
+        aria-label="Open sidebar"
+        onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</button>
+</th:block>
+
+</body>
+</html>

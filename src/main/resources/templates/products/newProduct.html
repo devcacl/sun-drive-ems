@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="~{layout/layout::head}"></th:block>
+    <link rel="stylesheet" th:href="@{/css/new-product.css}">
+</head>
+<body class="min-h-screen bg-[#07090d] text-white">
+
+<div class="flex min-h-screen">
+    <div th:replace="~{layout/layout :: sidebar}"></div>
+
+    <main class="flex-1 px-6 py-8 lg:px-10">
+        <section class="product-form-shell">
+            <div class="product-form-header">
+                <div>
+                    <p class="product-form-kicker">Inventory management</p>
+                    <h1 class="product-form-title">CREATE PRODUCT</h1>
+                </div>
+                <a th:href="@{/products}" class="header-back-link">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>Products</span>
+                </a>
+            </div>
+
+            <form th:action="@{/products/new}"
+                  th:object="${product}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="form-grid">
+                    <div class="fields-panel">
+                        <div class="field-block">
+                            <label>Name</label>
+                            <input type="text" th:field="*{nombreProd}" required>
+                        </div>
+
+                        <div class="field-block">
+                            <label>Status</label>
+                            <select th:field="*{estadoProd}" required>
+                                <option value="">Select</option>
+                                <option value="Available">Available</option>
+                                <option value="Out of Stock">Out Of Stock</option>
+                            </select>
+                        </div>
+
+                        <div class="field-block">
+                            <label>CATEGORIA</label>
+                            <select id="categoria" th:field="*{categoria}" required>
+                                <option value=""> Select</option>
+                                <option value="Sport cars">Sport cars</option>
+                                <option value="luxury cars">Luxury cars</option>
+                                <option value="Electric cars">Electric cars</option>
+                                <option value="Solar panels">Solar panels</option>
+                            </select>
+                        </div>
+
+                        <div class="field-block">
+                            <label>Brand</label>
+                            <select id="marca"
+                                    th:field="*{marca}"
+                                    th:data-selected="*{marca}"
+                                    required>
+                                <option value="">Select brand</option>
+                            </select>
+                        </div>
+
+                        <div class="field-block">
+                            <label>Price</label>
+                            <input type="number" th:field="*{precio}" required min="100000000" step="10000000">
+                        </div>
+
+                        <div class="field-block">
+                            <label>Stock</label>
+                            <input type="number" th:field="*{stock}" required min="0" step="1">
+                        </div>
+                    </div>
+
+                    <!-- columna derecha -->
+
+                    <div class="image-panel">
+                        <div class="image-panel-header">
+                            <p>Product image</p>
+                            <span>Preview</span>
+                        </div>
+                        <div class="image-preview-box">
+                            <img id="imagePreview" th:src="@{/images/notAvailable.jpg}">
+                        </div>
+                        <div class="upload-panel">
+                            <label for="foto" class="custom-upload-btn">
+                                <i class="fa-solid fa-upload"></i>
+                                Upload image
+                            </label>
+                            <input type="file" id="foto" name="foto" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a th:href="@{/products}" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Save</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+        const categoria = document.getElementById("categoria");
+        const marca = document.getElementById("marca");
+
+        const marcas = {
+            "Sport cars": ["Ferrari","lambo", "porsche"],
+            "luxury cars": ["BMW","Mersedes", "audi"],
+            "Electric cars": ["Tesla","Cupra"],
+            "Solar panels": ["Jinko", "Trina","LONGi"]
+        };
+
+        const selectedMarca = marca.getAttribute("data-selected");
+
+        function cargarMarcas(categoriaSeleccionada, marcaSeleccionada = ""){
+            marca.innerHTML = '<option value="">Select Brand</option>';
+
+            if(marcas[categoriaSeleccionada]){
+                marcas[categoriaSeleccionada].forEach(m => {
+                    const opt = document.createElement("option");
+                    opt.value = m;
+                    opt.textContent = m;
+
+                    if(m === marcaSeleccionada){
+                        opt.selected = true;
+                    }
+
+                    marca.appendChild(opt);
+                });
+            }
+        }
+
+        categoria.addEventListener("change", function(){
+            cargarMarcas(this.value);
+        });
+
+        cargarMarcas(categoria.value, selectedMarca);
+    });
+
+</script>
+
+<script>
+    const inputFoto = document.getElementById("foto");
+    const preview = document.getElementById("imagePreview");
+    const defaultImage = "/images/notAvailable.jpg";
+
+    inputFoto.addEventListener("change", function(){
+        const file =this.files[0];
+        if (file && file.type.startsWith("image/")) {
+            const reader = new FileReader();
+            reader.onload = e => preview.src = e.target.result;
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = defaultImage;
+        }
+    });
+
+</script>
+
+<script th:if="${mensajeExito}" th:inline="javascript">
+    alert([[${mensajeExito}]])
+</script>
+</body>
+</html>
+
