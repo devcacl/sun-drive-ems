@@ -72,11 +72,11 @@
                              th:src="${product.fotoUrl}"
                              th:alt="${product.nombreProd}"
                              onerror="this.onerror=null;this.src='/images/notAvailable.jpg';"
-                             class="w-full h-full object-contain p-4">
+                             class="block h-full w-full object-cover">
                         <img th:unless="${product.fotoUrl != null and !#strings.isEmpty(product.fotoUrl) and !#strings.equalsIgnoreCase(product.fotoUrl, 'null')}"
                              th:src="@{/static/images/renault4.jpg}"
                              alt="Product Image"
-                             class="w-full h-full object-contain p-4">
+                             class="block h-full w-full object-cover">
                     </div>
 
                     <div class="p-5 space-y-4">

@@ -38,8 +38,8 @@ public class ProductEntity implements Serializable {
 
     @NotNull
     @PositiveOrZero
-    @Digits(integer=8, fraction = 2)
-    @Column(name="precio", precision = 10, scale = 2, nullable = false)
+    @Digits(integer=15, fraction = 2)
+    @Column(name="precio", precision = 17, scale = 2, nullable = false)
     private BigDecimal precio;
 
     @NotNull

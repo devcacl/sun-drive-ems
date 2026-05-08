@@ -27,11 +27,23 @@
                   method="post"
                   enctype="multipart/form-data">
 
+                <div th:if="${#fields.hasAnyErrors()}" class="mb-4 rounded border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                    <p class="font-semibold">Review the form data.</p>
+                    <ul class="mt-2 list-disc pl-5">
+                        <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                    </ul>
+                </div>
+
+                <div th:if="${ErrorImagen}" class="mb-4 rounded border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                    <span th:text="${ErrorImagen}"></span>
+                </div>
+
                 <div class="form-grid">
                     <div class="fields-panel">
                         <div class="field-block">
                             <label>Name</label>
                             <input type="text" th:field="*{nombreProd}" required>
+                            <small th:if="${#fields.hasErrors('nombreProd')}" th:errors="*{nombreProd}" class="text-sm text-red-300"></small>
                         </div>
 
                         <div class="field-block">
@@ -41,6 +53,7 @@
                                 <option value="Available">Available</option>
                                 <option value="Out of Stock">Out Of Stock</option>
                             </select>
+                            <small th:if="${#fields.hasErrors('estadoProd')}" th:errors="*{estadoProd}" class="text-sm text-red-300"></small>
                         </div>
 
                         <div class="field-block">
@@ -52,6 +65,7 @@
                                 <option value="Electric cars">Electric cars</option>
                                 <option value="Solar panels">Solar panels</option>
                             </select>
+                            <small th:if="${#fields.hasErrors('categoria')}" th:errors="*{categoria}" class="text-sm text-red-300"></small>
                         </div>
 
                         <div class="field-block">
@@ -62,16 +76,19 @@
                                     required>
                                 <option value="">Select brand</option>
                             </select>
+                            <small th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}" class="text-sm text-red-300"></small>
                         </div>
 
                         <div class="field-block">
                             <label>Price</label>
-                            <input type="number" th:field="*{precio}" required min="100000000" step="10000000">
+                            <input type="number" th:field="*{precio}" required min="100000000" step="any">
+                            <small th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" class="text-sm text-red-300"></small>
                         </div>
 
                         <div class="field-block">
                             <label>Stock</label>
                             <input type="number" th:field="*{stock}" required min="0" step="1">
+                            <small th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="text-sm text-red-300"></small>
                         </div>
                     </div>
 
@@ -91,6 +108,7 @@
                                 Upload image
                             </label>
                             <input type="file" id="foto" name="foto" accept="image/*">
+                            <small th:if="${#fields.hasErrors('fotoUrl')}" th:errors="*{fotoUrl}" class="text-sm text-red-300"></small>
                         </div>
                     </div>
                 </div>
@@ -168,4 +186,3 @@
 </script>
 </body>
 </html>
-
