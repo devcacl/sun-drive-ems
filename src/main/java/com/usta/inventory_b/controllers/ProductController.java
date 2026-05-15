@@ -12,6 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,6 +92,19 @@ public class ProductController {
         redirectAttributes.addFlashAttribute("mensajeExito", "Product save successfully");
         return "redirect:/products";
 
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable("id") Long id,
+                                RedirectAttributes redirectAttributes){
+        try {
+            productService.delete(id);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Product deleted successfully");
+        } catch (DataIntegrityViolationException e) {
+            redirectAttributes.addFlashAttribute("mensajeError",
+                    "The product cannot be deleted because it is linked to one or more sales.");
+        }
+        return "redirect:/products";
     }
 
     private String saveImage(MultipartFile imagen) throws IOException {
